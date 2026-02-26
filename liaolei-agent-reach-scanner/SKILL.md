@@ -540,10 +540,3 @@ agent-reach search "2024年最火的AI工具 评测对比"
 
 - Agent-Reach GitHub: https://github.com/Panniantong/Agent-Reach
 - 官网: https://agent-reach.ai-coding.wiselychen.com
-- 安装文档: https://raw.githubusercontent.com/Panniantong/agent-reach/main/docs/install.md
-
----
-
-## License
-
-MIT
