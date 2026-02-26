@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__open-websearch__fetchGithubReadme",
+      "Bash(ln:*)",
+      "Bash(npx skills check)",
+      "Bash(npx skills add /Users/leiliao/MyWorkspace/Skills/liaolei-agent-reach-scanner -g -y)",
+      "Bash(npx skills list:*)",
+      "Bash(pip3:*)",
+      "Bash(git remote add:*)",
+      "Bash(git fetch:*)",
+      "Bash(git checkout:*)",
+      "Bash(git branch:*)",
+      "Bash(git reset:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}

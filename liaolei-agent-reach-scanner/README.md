@@ -49,11 +49,6 @@ agent-reach search-github "AI agent" -n 10
 agent-reach search "AI 热点 2026" -n 10
 ```
 
-## 完整文档
-
-- [SKILL.md](./SKILL.md) - Claude Code skill 完整定义
-- [README_CN.md](./README_CN.md) - 中文详细文档
-
 ## Twitter Cookie 配置
 
 1. 登录 x.com
