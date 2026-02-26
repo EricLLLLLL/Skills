@@ -24,6 +24,7 @@ description: 让 AI Agent 支持多平台热点发现：Twitter、X、GitHub、Y
 | 🐦 社交 | Twitter/X | 搜索推文、浏览时间线（需配置 Cookie） |
 | 📦 代码 | GitHub | 搜索仓库、查看 Issue |
 | 📖 社区 | Reddit | 搜索帖子 |
+| 🔗 代理 | 代理配置 | 全局代理支持 |
 | 📕 小红书 | 小红书 | 阅读、搜索（需配置 Docker） |
 | 🎵 抖音 | 抖音 | 视频解析、无水印下载（需配置 MCP） |
 | 💼 招聘 | LinkedIn、Boss直聘 | 职位搜索（需配置 MCP） |
@@ -117,9 +118,149 @@ mcporter config add exa https://mcp.exa.ai/mcp
 | 搜一下X/推特/Twitter | `agent-reach search-twitter` |
 | 看看GitHub/trending | `agent-reach search-github` |
 | 看视频/YouTube/B站 | `agent-reach search-youtube` / `agent-reach search-bilibili` |
+| Reddit 搜索 | `agent-reach search-reddit` |
 | 研究这个页面/读这个链接 | `agent-reach read <URL>` |
 | 搜一下/全网搜索 | `agent-reach search` |
 | 订阅 RSS | `agent-reach read <RSS_URL>` |
+
+---
+
+## 使用示例
+
+### 🔍 全网搜索
+
+```
+# AI 语义搜索
+agent-reach search "2024年最火的AI工具"
+agent-reach search "React 18 新特性"
+agent-reach search "Python 异步编程最佳实践"
+```
+
+### 🐦 Twitter/X 搜索
+
+```
+# 搜索关键词
+agent-reach search-twitter "OpenAI"
+agent-reach search-twitter "Claude AI"
+
+# 搜索某人发的推文
+agent-reach search-twitter "from:elonmusk"
+agent-reach search-twitter "from:sama"
+
+# 搜索带图片的推文
+agent-reach search-twitter "from:a16z has:images"
+
+# 搜索最近7天的热门
+agent-reach search-twitter "#AI from:elonmusk"
+```
+
+### 📦 GitHub 搜索
+
+```
+# 搜索仓库
+agent-reach search-github "llm framework"
+agent-reach search-github "react component library"
+agent-reach search-github "python async"
+
+# 搜索 trending
+agent-reach search-github "stars:>1000 language:python"
+
+# 搜索特定主题
+agent-reach search-github "topic:chatgpt plugin"
+```
+
+### 📺 YouTube 搜索
+
+```
+# 搜索视频
+agent-reach search-youtube "Python 教程"
+agent-reach search-youtube "React 入门教程"
+agent-reach search-youtube "AI 新闻 2024"
+
+# 搜索特定频道的视频
+agent-reach search-youtube "from:GoogleDevelopers"
+```
+
+### 🎵 B站 搜索
+
+```
+# 搜索视频
+agent-reach search-bilibili "Python 入门"
+agent-reach search-bilibili "AI 教程"
+agent-reach search-bilibili "科技评测"
+
+# 搜索特定UP主
+agent-reach search-bilibili "up:老高与小茉"
+```
+
+### 📖 Reddit 搜索
+
+```
+# 搜索帖子
+agent-reach search-reddit "machine learning"
+agent-reach search-reddit "web development"
+agent-reach search-reddit "rust programming"
+
+# 搜索特定 subreddit
+agent-reach search-reddit "r/programming"
+agent-reach search-reddit "r/programming python tips"
+agent-reach search-reddit "r/ArtificialIntelligence"
+```
+
+### 🌐 读取网页/文章
+
+```
+# 读取任意 URL（使用 jina.ai 提取正文）
+agent-reach read "https://github.com/panniantong/agent-reach"
+agent-reach read "https://www.youtube.com/watch?v=xxx"
+agent-reach read "https://mp.weixin.qq.com/s/xxx"
+
+# 读取 RSS 源
+agent-reach read "https://hnrss.org/frontpage"
+agent-reach read "https:// RSS 订阅地址"
+```
+
+### 🔧 配置代理
+
+```
+# 配置 HTTP 代理
+agent-reach configure proxy "http://user:pass@ip:port"
+
+# 配置 SOCKS5 代理
+agent-reach configure proxy "socks5://user:pass@ip:port"
+```
+
+### 📕 小红书
+
+```
+# 读取小红书笔记
+agent-reach read "https://www.xiaohongshu.com/explore/xxx"
+
+# 搜索小红书
+agent-reach search-xiaohongshu "美食推荐"
+agent-reach search-xiaohongshu "穿搭分享"
+```
+
+### 🎵 抖音
+
+```
+# 解析抖音视频（获取文案/无水印地址）
+agent-reach parse-douyin "https://www.douyin.com/video/xxx"
+
+# 搜索抖音
+agent-reach search-douyin "搞笑段子"
+agent-reach search-douyin "美食教程"
+```
+
+### 💼 热点扫描组合拳
+
+```
+# 科技热点一站式扫描
+agent-reach search-twitter "AI" + agent-reach search-github "llm" + agent-reach search-youtube "artificial intelligence"
+
+# 编程技术热点
+agent-reach search-github "trending" + agent-reach search-reddit "r/programming"
+```
 
 ---
 
@@ -131,6 +272,109 @@ agent-reach doctor
 
 # 更新到最新版本
 agent-reach check-update
+```
+
+---
+
+## 常见问题解决
+
+### ❓ Twitter/X 搜索失败
+
+**问题**：搜索返回空或报错
+**解决**：
+1. Cookie 可能过期，重新获取并配置
+2. 检查 `agent-reach doctor` 中 Twitter 状态
+3. 尝试用 `bird search "关键词" --json` 直接测试
+
+### ❓ YouTube 字幕提取失败
+
+**问题**：无法获取字幕
+**解决**：
+1. 确保已安装 `yt-dlp`
+2. 检查视频是否公开可访问
+3. 尝试：`yt-dlp --write-sub --skip-download "视频URL"`
+
+### ❓ GitHub 搜索无结果
+
+**问题**：搜索返回空
+**解决**：
+1. 检查 GitHub API 限流
+2. 尝试：`gh auth login` 重新登录
+3. 使用更通用的关键词
+
+### ❓ 全网搜索无法使用
+
+**问题**：搜索返回空
+**解决**：
+1. 确认已安装 mcporter：`npm list -g mcporter`
+2. 确认已添加 Exa MCP：`mcporter config list`
+3. 尝试：`mcporter call 'exa.search(...)'`
+
+### ❓ B站 视频解析失败
+
+**问题**：无法获取视频信息
+**解决**：
+1. 确保视频链接正确（完整 URL）
+2. 检查是否是大会员专属内容
+3. 尝试使用 `yt-dlp` 直接解析
+
+### ❓ 安装依赖失败
+
+**问题**：安装过程中报错
+**解决**：
+1. 使用安全模式查看需要什么：`agent-reach install --safe`
+2. 使用预览模式查看操作：`agent-reach install --dry-run`
+3. 手动安装缺失的依赖
+
+### ❓ 代理配置不生效
+
+**问题**：配置了代理但没效果
+**解决**：
+1. 确认代理格式正确：`http://ip:port` 或 `socks5://ip:port`
+2. 如需认证：`http://user:pass@ip:port`
+3. 重启终端或重新配置
+
+---
+
+## 进阶使用
+
+### 🔄 组合热点扫描
+
+```
+# 科技热点一站式扫描
+agent-reach search-twitter "AI" + agent-reach search-github "llm" + agent-reach search-youtube "artificial intelligence"
+
+# 编程技术热点
+agent-reach search-github "trending" + agent-reach search-reddit "r/programming"
+
+# 全平台热门追踪
+agent-reach search-twitter "#Tech" + agent-reach search-github "stars:>500" + agent-reach search-bilibili "科技"
+```
+
+### 📊 读取内容并分析
+
+```
+# 读取技术博客并总结
+agent-reach read "https://example.com/tech-article"
+
+# 读取 YouTube 视频字幕
+agent-reach read "https://www.youtube.com/watch?v=xxx"
+
+# 读取 RSS 订阅源
+agent-reach read "https://hnrss.org/frontpage"
+```
+
+### 🎯 精准搜索技巧
+
+```
+# Twitter: 搜索某人最近动态
+agent-reach search-twitter "from:sama AI"
+
+# GitHub: 搜索高星项目
+agent-reach search-github "stars:>1000 language:python"
+
+# 全网: AI 语义搜索
+agent-reach search "2024年最火的AI工具 评测对比"
 ```
 
 ---
