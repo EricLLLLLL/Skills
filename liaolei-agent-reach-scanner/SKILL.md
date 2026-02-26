@@ -15,19 +15,21 @@ description: 让 AI Agent 支持多平台热点发现：Twitter、X、GitHub、Y
 
 帮你配置 Agent Reach 工具，让 AI Agent 可以访问以下平台：
 
-| 类别 | 平台 | 说明 |
-|------|------|------|
-| 🌐 网页 | 任意网页 | 阅读任意网页内容，无需配置 |
-| 📺 视频 | YouTube、B站 | 字幕提取、视频搜索，无需配置 |
-| 📡 RSS | RSS/Atom | 阅读 RSS 源，无需配置 |
-| 🔍 搜索 | 全网搜索 | AI 语义搜索（免费，需配置 MCP） |
-| 🐦 社交 | Twitter/X | 搜索推文、浏览时间线（需配置 Cookie） |
-| 📦 代码 | GitHub | 搜索仓库、查看 Issue |
-| 📖 社区 | Reddit | 搜索帖子 |
-| 🔗 代理 | 代理配置 | 全局代理支持 |
-| 📕 小红书 | 小红书 | 阅读、搜索（需配置 Docker） |
-| 🎵 抖音 | 抖音 | 视频解析、无水印下载（需配置 MCP） |
-| 💼 招聘 | LinkedIn、Boss直聘 | 职位搜索（需配置 MCP） |
+| 类别 | 平台 | 开箱即用 | 进阶功能 | 配置方式 |
+|------|------|----------|----------|----------|
+| 🌐 网页 | 任意网页 | 阅读任意网页 | — | 无需配置 |
+| 📺 YouTube | 字幕提取 + 视频搜索 | ✅ | — | 无需配置 |
+| 📡 RSS | RSS/Atom | 阅读任意 RSS/Atom 源 | — | 无需配置 |
+| 🔍 全网搜索 | AI 语义搜索 | ✅ | — | 自动配置 MCP |
+| 📦 GitHub | 读公开仓库 + 搜索 | ✅ | 私有仓库、提 Issue/PR/Fork | 告诉 Agent「帮我登录 GitHub」 |
+| 🐦 Twitter/X | 读单条推文 | ✅ | 搜索推文、浏览时间线、发推 | 告诉 Agent「帮我配 Twitter」 |
+| 📺 B站 | 本地：字幕提取 + 搜索 | ✅ | 服务器也能用 | 告诉 Agent「帮我配代理」 |
+| 📖 Reddit | 搜索（通过 Exa 免费） | ✅ | 读帖子和评论 | 告诉 Agent「帮我配代理」 |
+| 📕 小红书 | — | 阅读、搜索、发帖、评论、点赞 | — | 告诉 Agent「帮我配小红书」 |
+| 🎵 抖音 | — | 视频解析、无水印下载链接获取 | — | 告诉 Agent「帮我配抖音」 |
+| 💼 LinkedIn | Jina Reader 读公开页面 | ✅ | Profile 详情、公司页面、职位搜索 | 告诉 Agent「帮我配 LinkedIn」 |
+| 🏢 Boss直聘 | Jina Reader 读职位页 | ✅ | 搜索职位、向 HR 打招呼 | 告诉 Agent「帮我配 Boss直聘」 |
+| 🔗 代理 | 全局代理支持 | — | — | `agent-reach configure proxy` |
 
 ---
 
@@ -116,12 +118,22 @@ mcporter config add exa https://mcp.exa.ai/mcp
 | 看看热点/选题/今天有什么热点 | 用 Agent Reach 扫描 X/Twitter + GitHub |
 | 看看马斯克/某个账号 | `agent-reach search-twitter "from:用户名"` |
 | 搜一下X/推特/Twitter | `agent-reach search-twitter` |
+| 看看这条推文 | `agent-reach read <推文URL>` |
 | 看看GitHub/trending | `agent-reach search-github` |
+| 看看这个仓库 | `agent-reach read <GitHub仓库URL>` |
+| 提 Issue/PR | GitHub 登录后可用 |
 | 看视频/YouTube/B站 | `agent-reach search-youtube` / `agent-reach search-bilibili` |
+| 提取视频字幕 | `agent-reach read <视频URL>` |
 | Reddit 搜索 | `agent-reach search-reddit` |
+| 看看 Reddit 帖子 | `agent-reach read <帖子URL>` |
 | 研究这个页面/读这个链接 | `agent-reach read <URL>` |
 | 搜一下/全网搜索 | `agent-reach search` |
 | 订阅 RSS | `agent-reach read <RSS_URL>` |
+| 看看小红书 | `agent-reach read <小红书URL>` / `agent-reach search-xiaohongshu` |
+| 看看抖音 | `agent-reach parse-douyin <抖音URL>` |
+| 看看 LinkedIn | `agent-reach read <LinkedIn URL>` |
+| 搜职位/Boss直聘 | `agent-reach search-boss` |
+| 需要代理 | `agent-reach configure proxy` |
 
 ---
 
@@ -250,6 +262,48 @@ agent-reach parse-douyin "https://www.douyin.com/video/xxx"
 # 搜索抖音
 agent-reach search-douyin "搞笑段子"
 agent-reach search-douyin "美食教程"
+```
+
+### 💼 LinkedIn
+
+```
+# 读取 LinkedIn 公开页面
+agent-reach read "https://www.linkedin.com/in/username"
+agent-reach read "https://www.linkedin.com/company/company-name"
+
+# 读取职位页面
+agent-reach read "https://www.linkedin.com/jobs/view/xxx"
+
+# 搜索职位（需要 MCP 配置）
+agent-reach search-linkedin "软件工程师"
+agent-reach search-linkedin "AI engineer remote"
+```
+
+### 🏢 Boss直聘
+
+```
+# 读取职位页面
+agent-reach read "https://www.zhipin.com/job_detail/xxx.html"
+
+# 搜索职位（需要 MCP 配置）
+agent-reach search-boss "前端工程师"
+agent-reach search-boss "产品经理 北京"
+
+# 向 HR 打招呼（需要 MCP 配置）
+agent-reach boss-message "职位ID" "你好，我对贵司职位很感兴趣..."
+```
+
+### 📊 RSS 订阅
+
+```
+# 阅读 RSS 源
+agent-reach read "https://hnrss.org/frontpage"
+agent-reach read "https://RSS 订阅地址"
+
+# 常用 RSS 源推荐
+# Hacker News: https://hnrss.org/frontpage
+# 掘金: https://juejin.cn/feed
+# 知乎热榜: https://www.zhihu.com/rss
 ```
 
 ### 💼 热点扫描组合拳
