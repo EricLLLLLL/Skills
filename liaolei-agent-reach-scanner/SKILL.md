@@ -1,6 +1,7 @@
 ---
 name: liaolei-agent-reach-scanner
 description: 让 AI Agent 支持多平台热点发现：Twitter、X、GitHub、YouTube、B站、Reddit、全网搜索。需要安装 agent-reach 工具后使用。
+allowed-tools: [Bash, Read, Grep, Glob]
 ---
 
 # Liaolei Agent Reach Scanner
