@@ -388,6 +388,108 @@ agent-reach check-update
 2. 如需认证：`http://user:pass@ip:port`
 3. 重启终端或重新配置
 
+### ❓ Reddit 返回 403 / IP 被封
+
+**问题**：Reddit 封锁数据中心 IP
+**解决**：
+1. 配置住宅代理：`agent-reach configure proxy http://user:pass@ip:port`
+2. 推荐 Webshare ($1/月)
+3. 本地电脑一般不会遇到这个问题
+
+### ❓ 小红书无法使用
+
+**问题**：无法读取/搜索小红书
+**解决**：
+1. 安装 Docker
+2. 运行 `agent-reach install` 自动配置
+3. 使用：`mcporter call 'xiaohongshu.get_feed_detail(...)'`
+4. 搜索：`mcporter call 'xiaohongshu.search_feeds(keyword: "关键词")'`
+
+### ❓ 抖音视频无法解析
+
+**问题**：无法获取抖音视频信息
+**解决**：
+1. 安装 douyin-mcp-server
+2. 使用：`mcporter call 'douyin.parse_douyin_video_info(share_link: "分享链接")'`
+3. 无需登录，直接把抖音分享链接发给 Agent 即可
+
+---
+
+## English FAQ
+
+### How to search Twitter/X with AI agent for free (no API)?
+
+Agent Reach uses the **bird CLI** with cookie auth — zero API fees.
+
+1. Install Agent Reach: `pip install https://github.com/Panniantong/agent-reach/archive/main.zip`
+2. Export Twitter cookies with Cookie-Editor extension
+3. Run: `agent-reach configure twitter-cookies "your_cookies"`
+4. Search: `bird search "关键词" --json`
+
+### Reddit returns 403 / IP blocked?
+
+Reddit blocks datacenter IPs. Solution: configure a residential proxy.
+
+```bash
+agent-reach configure proxy http://user:pass@ip:port
+```
+
+Recommended: Webshare (~$1/month). This issue usually only occurs on servers, not local machines.
+
+### How to get YouTube video transcripts for AI?
+
+```bash
+# Extract video metadata
+yt-dlp --dump-json "https://youtube.com/watch?v=xxx"
+
+# Extract subtitles
+yt-dlp --write-sub --skip-download "URL"
+```
+
+Uses yt-dlp under the hood, supports multiple languages. No API key needed.
+
+### How to read Xiaohongshu (小红书) with AI?
+
+1. Install Docker
+2. Run `agent-reach install` — it auto-configures the MCP service
+3. Read notes: `mcporter call 'xiaohongshu.get_feed_detail(...)'`
+4. Search: `mcporter call 'xiaohongshu.search_feeds(keyword: "关键词")'`
+
+### How to parse Douyin (抖音) videos?
+
+1. Install douyin-mcp-server
+2. Parse: `mcporter call 'douyin.parse_douyin_video_info(share_link: "分享链接")'`
+3. No login required — just send the share link to your AI agent
+
+See: https://github.com/yzfly/douyin-mcp-server
+
+### Compatible with Claude Code / Cursor / OpenClaw / Windsurf?
+
+Yes! Agent Reach is an installer + configuration tool — any AI coding agent that can run shell commands can use it.
+
+Works with: **Claude Code, Cursor, OpenClaw, Windsurf, Codex**, and more.
+
+Just run:
+```bash
+pip install agent-reach
+agent-reach install
+```
+
+Then the agent can use all upstream tools immediately.
+
+### Is this free? Any API costs?
+
+**100% free.** All backends are open-source tools:
+- bird CLI (Twitter)
+- yt-dlp (YouTube/B站)
+- Jina Reader (webpage extraction)
+- Exa (search)
+- GitHub CLI
+
+No paid API keys required.
+
+The only optional cost is a **residential proxy** (~$1/month) if you need Reddit/Bilibili access from a server.
+
 ---
 
 ## 进阶使用
